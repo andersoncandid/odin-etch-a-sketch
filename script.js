@@ -1,6 +1,20 @@
 const grid = document.querySelector(".container");
 const fixedSquareWidth = grid.clientWidth;
 
+// Set random RGB color for element
+function randomColor() {
+  const rng = Math.floor(Math.random() * (4 - 1) + 1);
+
+  switch (rng) {
+    case 1:
+      return "red";
+    case 2:
+      return "green";
+    case 3:
+      return "blue";
+  }
+}
+
 // Create a grid of square divs
 function createGrid(squares) {
   const squareSide = fixedSquareWidth / squares;
@@ -20,17 +34,26 @@ function createGrid(squares) {
   }
 }
 
+let opacityCounter = 1;
+
 // Change color on hover
 function colorChange(event) {
   let target = event.target;
   if (target.className === "gridElement") {
-    target.style.backgroundColor = "blue";
+    target.style.backgroundColor = randomColor();
+    target.style.opacity = opacityCounter / 10;
+  }
+
+  // Progressive darkening effect counter
+  if (opacityCounter > 10) {
+    opacityCounter = 1;
+  } else {
+    opacityCounter++;
   }
 }
 
 // Create a grid with 16 squares on startup
 createGrid(16);
-
 grid.addEventListener("mouseover", colorChange);
 
 // Button to add a new grid
