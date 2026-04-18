@@ -55,7 +55,6 @@ function colorChange(event) {
 // Create a grid with 16 squares on startup
 createGrid(16);
 grid.addEventListener("mouseover", colorChange);
-grid.addEventListener("touchmove", colorChange);
 
 // Button to add a new grid
 const btn = document.querySelector("#btn");
@@ -81,11 +80,9 @@ btn.addEventListener("click", (event) => {
 
   // Clean the DOM and event listeners
   grid.removeEventListener("mouseover", colorChange);
-  grid.removeEventListener("touchmove", colorChange);
   grid.replaceChildren();
 
   // Create a new grid
   createGrid(userInput);
   grid.addEventListener("mouseover", colorChange);
-  grid.addEventListener("touchmove", colorChange);
 });
