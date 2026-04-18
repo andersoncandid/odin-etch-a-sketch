@@ -1,7 +1,7 @@
-// Create 16x16 grid of square divs
 const grid = document.querySelector(".container");
 const fixedSquareWidth = grid.clientWidth;
 
+// Create a grid of square divs
 function createGrid(squares) {
   const squareSide = fixedSquareWidth / squares;
 
@@ -20,18 +20,28 @@ function createGrid(squares) {
   }
 }
 
-// Create grid on startup with 16 squares
+// Change color on hover
+function colorChange(event) {
+  let target = event.target;
+  if (target.className === "gridElement") {
+    target.style.backgroundColor = "blue";
+  }
+}
+
+// Create a grid with 16 squares on startup
 createGrid(16);
 
-// New grid button
+grid.addEventListener("mouseover", colorChange);
+
+// Button to add a new grid
 const btn = document.querySelector("#btn");
 
 btn.addEventListener("click", (event) => {
-  const userInput = parseInt(
+  let userInput = parseInt(
     prompt("Number of squares per side for the new grid:"),
   );
 
-  // Valid input
+  // Validate the user input
   try {
     if (Number.isNaN(userInput))
       throw "Invalid input, please enter a valer number of squares.";
@@ -40,13 +50,16 @@ btn.addEventListener("click", (event) => {
     return;
   }
 
-  createGrid(userInput);
-});
-
-// Change color on hover
-grid.addEventListener("mouseover", (event) => {
-  let target = event.target;
-  if (target.className === "gridElement") {
-    target.style.backgroundColor = "blue";
+  // Max grid size: 100x100
+  if (userInput > 100) {
+    userInput = 100;
   }
+
+  // Clean the DOM and event listeners
+  grid.removeEventListener("mouseover", colorChange);
+  grid.replaceChildren();
+
+  // Create a new grid
+  createGrid(userInput);
+  grid.addEventListener("mouseover", colorChange);
 });
