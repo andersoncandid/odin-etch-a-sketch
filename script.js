@@ -1,29 +1,31 @@
 const grid = document.querySelector(".container");
-const fixedSquareWidth = grid.clientWidth;
+const squareWidth = grid.clientWidth;
 
-// Set random RGB color for element
-function randomColor() {
-  const rng = Math.floor(Math.random() * (4 - 1) + 1);
+function getRandomNumber(max) {
+  return Math.floor(Math.random() * (max + 1));
+}
 
-  switch (rng) {
-    case 1:
+function generateRandomRgbColor() {
+  switch (getRandomNumber(2)) {
+    case 0:
       return "red";
-    case 2:
+    case 1:
       return "green";
-    case 3:
+    case 2:
       return "blue";
   }
 }
 
-// Create a grid of square divs
-function createGrid(squares) {
-  const squareSide = fixedSquareWidth / squares;
+function createGrid(maxColumns, squareWidth) {
+  const squareSide = squareWidth / maxColumns;
 
-  for (let i = 0; i < squares; i++) {
+  // Create a grid columns
+  for (let i = 0; i < maxColumns; i++) {
     const column = document.createElement("div");
     column.classList.add("gridColumn");
 
-    for (let i = 0; i < squares; i++) {
+    // Create grid elements and calculate their size
+    for (let i = 0; i < maxColumns; i++) {
       const element = document.createElement("div");
       element.classList.add("gridElement");
       element.style.width = squareSide + "px";
@@ -37,10 +39,10 @@ function createGrid(squares) {
 let opacityCounter = 1;
 
 // Change color on hover
-function colorChange(event) {
+function changeColor(event) {
   let target = event.target;
   if (target.className === "gridElement") {
-    target.style.backgroundColor = randomColor();
+    target.style.backgroundColor = generateRandomRgbColor();
     target.style.opacity = opacityCounter / 10;
   }
 
@@ -53,8 +55,8 @@ function colorChange(event) {
 }
 
 // Create a grid with 16 squares on startup
-createGrid(16);
-grid.addEventListener("mouseover", colorChange);
+createGrid(16, squareWidth);
+grid.addEventListener("mouseover", changeColor);
 
 // Button to add a new grid
 const btn = document.querySelector("#btn");
@@ -79,10 +81,10 @@ btn.addEventListener("click", (event) => {
   }
 
   // Clean the DOM and event listeners
-  grid.removeEventListener("mouseover", colorChange);
+  grid.removeEventListener("mouseover", changeColor);
   grid.replaceChildren();
 
   // Create a new grid
-  createGrid(userInput);
-  grid.addEventListener("mouseover", colorChange);
+  createGrid(userInput, squareWidth);
+  grid.addEventListener("mouseover", changeColor);
 });
